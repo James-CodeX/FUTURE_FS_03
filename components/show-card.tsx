@@ -3,16 +3,16 @@
 import { Play, Plus, ThumbsUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Movie, getImageUrl } from '@/lib/tmdb'
+import { Movie, TvShow, getImageUrl } from '@/lib/tmdb'
 
 interface ShowCardProps {
-  movie: Movie
+  movie: Movie | TvShow
 }
 
 export default function ShowCard({ movie }: ShowCardProps) {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
-  const [favorites, setFavorites] = useState<Movie[]>([])
+  const [favorites, setFavorites] = useState<(Movie | TvShow)[]>([])
 
   useEffect(() => {
     const saved = localStorage.getItem('flixhub-favorites')
@@ -38,7 +38,7 @@ export default function ShowCard({ movie }: ShowCardProps) {
     localStorage.setItem('flixhub-favorites', JSON.stringify(updated))
   }
 
-  const title = movie.title || movie.name || 'Untitled'
+  const title = (movie as any).title || (movie as any).name || 'Untitled'
   const imageUrl = getImageUrl(movie.poster_path)
 
   return (
