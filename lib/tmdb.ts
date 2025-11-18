@@ -6,6 +6,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 function getBaseUrl() {
   if (typeof window !== 'undefined') return ''
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  if (process.env.NETLIFY) return process.env.URL || ''
   return `http://localhost:${process.env.PORT || 3000}`
 }
 
