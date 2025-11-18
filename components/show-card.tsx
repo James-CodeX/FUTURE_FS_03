@@ -12,7 +12,7 @@ interface ShowCardProps {
 export default function ShowCard({ movie }: ShowCardProps) {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
-  const [favorites, setFavorites] = useState<number[]>([])
+  const [favorites, setFavorites] = useState<Movie[]>([])
 
   useEffect(() => {
     const saved = localStorage.getItem('flixhub-favorites')
@@ -21,7 +21,7 @@ export default function ShowCard({ movie }: ShowCardProps) {
     }
   }, [])
 
-  const isFavorited = favorites.includes(movie.id)
+  const isFavorited = favorites.some(fav => fav.id === movie.id)
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -31,8 +31,8 @@ export default function ShowCard({ movie }: ShowCardProps) {
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
     const updated = isFavorited
-      ? favorites.filter(id => id !== movie.id)
-      : [...favorites, movie.id]
+      ? favorites.filter(fav => fav.id !== movie.id)
+      : [...favorites, movie]
     
     setFavorites(updated)
     localStorage.setItem('flixhub-favorites', JSON.stringify(updated))

@@ -1,7 +1,8 @@
 import { getMovieDetails, getMovieCredits, getSimilarMovies, getImageUrl, GENRES } from '@/lib/tmdb'
 import Header from '@/components/header'
 import ShowCard from '@/components/show-card'
-import { Play, ChevronLeft } from 'lucide-react'
+import MovieActions from '@/components/movie-actions'
+import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function MovieDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -67,15 +68,7 @@ export default async function MovieDetailPage({ params }: { params: Promise<{ id
 
             <p className="text-gray-300 mb-8 text-lg leading-relaxed max-w-xl">{movieDetails.overview || 'No overview available.'}</p>
 
-            <div className="flex gap-4 flex-wrap">
-              <button className="flex items-center gap-2 bg-accent text-background px-8 py-3 rounded font-bold text-lg hover:bg-accent/80 transition-all duration-200 active:scale-95">
-                <Play size={24} fill="currentColor" />
-                Play
-              </button>
-              <button className="px-8 py-3 border-2 border-gray-500 text-white rounded font-bold hover:border-white transition-colors">
-                Add to List
-              </button>
-            </div>
+            <MovieActions movie={movieDetails} />
 
             {/* Details */}
             <div className="mt-8 grid grid-cols-2 gap-4">
