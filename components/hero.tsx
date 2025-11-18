@@ -2,6 +2,7 @@
 
 import { Play, Info } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { getImageUrl } from '@/lib/tmdb'
 
 interface Movie {
@@ -20,6 +21,7 @@ interface HeroProps {
 export default function Hero({ movies }: HeroProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0)
+  const router = useRouter()
 
   useEffect(() => {
     setIsLoaded(true)
@@ -78,11 +80,17 @@ export default function Hero({ movies }: HeroProps) {
 
           {/* Buttons */}
           <div className="flex gap-4 pt-4">
-            <button className="group flex items-center gap-2 bg-foreground text-background px-8 py-3 rounded-lg font-bold hover:bg-foreground/80 transition-all duration-300 hover:scale-105">
+            <button 
+              onClick={() => router.push(`/movie/${featuredMovie.id}`)}
+              className="group flex items-center gap-2 bg-foreground text-background px-8 py-3 rounded-lg font-bold hover:bg-foreground/80 transition-all duration-300 hover:scale-105"
+            >
               <Play size={20} className="group-hover:scale-110 transition-transform duration-300" />
               <span>Play</span>
             </button>
-            <button className="group flex items-center gap-2 bg-card border border-border text-foreground px-8 py-3 rounded-lg font-bold hover:bg-card/80 hover:border-accent transition-all duration-300 hover:scale-105">
+            <button 
+              onClick={() => router.push(`/movie/${featuredMovie.id}`)}
+              className="group flex items-center gap-2 bg-card border border-border text-foreground px-8 py-3 rounded-lg font-bold hover:bg-card/80 hover:border-accent transition-all duration-300 hover:scale-105"
+            >
               <Info size={20} className="group-hover:scale-110 transition-transform duration-300" />
               <span>More Info</span>
             </button>

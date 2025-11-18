@@ -44,6 +44,7 @@ export default function ShowCard({ movie }: ShowCardProps) {
   return (
     <div
       className="relative w-52 h-80 rounded-lg overflow-hidden group cursor-pointer"
+      onClick={handlePlayClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
