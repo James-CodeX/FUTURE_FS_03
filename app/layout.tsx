@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 import { Bebas_Neue, Inter } from 'next/font/google'
@@ -48,7 +47,6 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.variable} ${bebasNeue.variable} font-sans antialiased overflow-x-hidden`}>
         {children}
-        <Analytics />
       </body>
     </html>
   )
