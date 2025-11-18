@@ -2,6 +2,12 @@
 
 A modern recreation of Netflix's streaming platform built with Next.js 16, featuring AI-enhanced branding and a sleek, responsive design.
 
+## 🔗 Live Demo
+
+**[View Live Site](https://flixhub-ft-03.netlify.app/)**
+
+![FlixHub Screenshot](public/FlixHub%20ScreenShot.png)
+
 ## 🎯 Project Overview
 
 This project is a complete rebrand and redesign of Netflix's website, created as part of the **Future Interns Full Stack Web Development Task 3**. The goal was to leverage AI tools and modern web technologies to create a fresh, user-friendly streaming platform interface.
