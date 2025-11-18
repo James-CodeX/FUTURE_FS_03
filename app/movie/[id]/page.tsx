@@ -12,7 +12,7 @@ export default async function MovieDetailPage({ params }: { params: { id: string
     getSimilarMovies(movieId),
   ])
 
-  if (!movieDetails) {
+  if (!movieDetails || !movieDetails.id) {
     return (
       <main className="min-h-screen bg-background">
         <Header />
@@ -23,9 +23,8 @@ export default async function MovieDetailPage({ params }: { params: { id: string
     )
   }
 
-  const backdropUrl = getImageUrl(movieDetails.backdrop_path, 'large')
-  const posterUrl = getImageUrl(movieDetails.poster_path, 'large')
-  const directorAndCast = credits?.crew?.slice(0, 3) || []
+  const backdropUrl = getImageUrl(movieDetails.backdrop_path || null, 'large')
+  const posterUrl = getImageUrl(movieDetails.poster_path || null, 'large')
   const cast = credits?.cast?.slice(0, 5) || []
   const genreNames = movieDetails.genres?.map((g: any) => g.name) || []
 
@@ -58,14 +57,14 @@ export default async function MovieDetailPage({ params }: { params: { id: string
             
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-2">
-                <span className="text-accent text-3xl font-bold">{movieDetails.vote_average.toFixed(1)}</span>
+                <span className="text-accent text-3xl font-bold">{movieDetails.vote_average?.toFixed(1) || 'N/A'}</span>
                 <span className="text-accent text-xl">★</span>
               </div>
-              <span className="text-gray-400">{movieDetails.runtime} min</span>
-              <span className="text-gray-400">{new Date(movieDetails.release_date).getFullYear()}</span>
+              {movieDetails.runtime && <span className="text-gray-400">{movieDetails.runtime} min</span>}
+              {movieDetails.release_date && <span className="text-gray-400">{new Date(movieDetails.release_date).getFullYear()}</span>}
             </div>
 
-            <p className="text-gray-300 mb-8 text-lg leading-relaxed max-w-xl">{movieDetails.overview}</p>
+            <p className="text-gray-300 mb-8 text-lg leading-relaxed max-w-xl">{movieDetails.overview || 'No overview available.'}</p>
 
             <div className="flex gap-4 flex-wrap">
               <button className="flex items-center gap-2 bg-accent text-background px-8 py-3 rounded font-bold text-lg hover:bg-accent/80 transition-all duration-200 active:scale-95">
@@ -85,13 +84,13 @@ export default async function MovieDetailPage({ params }: { params: { id: string
                   <p className="text-white">{genreNames.join(', ')}</p>
                 </div>
               )}
-              {movieDetails.budget > 0 && (
+              {movieDetails.budget && movieDetails.budget > 0 && (
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Budget</p>
                   <p className="text-white">${(movieDetails.budget / 1000000).toFixed(0)}M</p>
                 </div>
               )}
-              {movieDetails.revenue > 0 && (
+              {movieDetails.revenue && movieDetails.revenue > 0 && (
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Revenue</p>
                   <p className="text-white">${(movieDetails.revenue / 1000000).toFixed(0)}M</p>

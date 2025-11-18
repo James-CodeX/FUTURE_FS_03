@@ -163,8 +163,13 @@ export async function getMovieDetails(movieId: number) {
     const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}`, {
       next: { revalidate: 3600 }
     })
+    if (!res.ok) {
+      console.log(`TMDB API error: ${res.status} - ${res.statusText}`)
+      return null
+    }
     return await res.json()
-  } catch {
+  } catch (error) {
+    console.log('Error fetching movie details:', error)
     return null
   }
 }
