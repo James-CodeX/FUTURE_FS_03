@@ -3,12 +3,7 @@ const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || 'demo'
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
-function getBaseUrl() {
-  if (typeof window !== 'undefined') return ''
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  if (process.env.NETLIFY) return process.env.URL || ''
-  return `http://localhost:${process.env.PORT || 3000}`
-}
+
 
 export interface Movie {
   id: number
@@ -57,8 +52,11 @@ export function getImageUrl(path: string | null, size: 'small' | 'medium' | 'lar
 
 export async function getTrendingMovies() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/trending-movies`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -66,8 +64,11 @@ export async function getTrendingMovies() {
 
 export async function getPopularMovies() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/popular-movies`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&page=1`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -75,8 +76,11 @@ export async function getPopularMovies() {
 
 export async function getTopRatedMovies() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/top-rated-movies`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}&page=1`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -84,8 +88,11 @@ export async function getTopRatedMovies() {
 
 export async function getUpcomingMovies() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/upcoming-movies`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/movie/upcoming?api_key=${TMDB_API_KEY}&page=1`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -93,8 +100,11 @@ export async function getUpcomingMovies() {
 
 export async function getPopularTvShows() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/popular-tv`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/tv/popular?api_key=${TMDB_API_KEY}&page=1`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -102,8 +112,11 @@ export async function getPopularTvShows() {
 
 export async function getTopRatedTvShows() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/top-rated-tv`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/tv/top_rated?api_key=${TMDB_API_KEY}&page=1`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -111,8 +124,11 @@ export async function getTopRatedTvShows() {
 
 export async function getTrendingTvShows() {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/trending-tv`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/trending/tv/week?api_key=${TMDB_API_KEY}`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -120,8 +136,11 @@ export async function getTrendingTvShows() {
 
 export async function getMoviesByGenre(genreId: number) {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/genre-movies?genreId=${genreId}`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -129,8 +148,11 @@ export async function getMoviesByGenre(genreId: number) {
 
 export async function searchMovies(query: string) {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/search?q=${encodeURIComponent(query)}`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`, {
+      next: { revalidate: 60 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
@@ -138,7 +160,9 @@ export async function searchMovies(query: string) {
 
 export async function getMovieDetails(movieId: number) {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/movie/${movieId}`)
+    const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}`, {
+      next: { revalidate: 3600 }
+    })
     return await res.json()
   } catch {
     return null
@@ -147,7 +171,9 @@ export async function getMovieDetails(movieId: number) {
 
 export async function getMovieCredits(movieId: number) {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/movie/${movieId}/credits`)
+    const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`, {
+      next: { revalidate: 3600 }
+    })
     return await res.json()
   } catch {
     return null
@@ -156,8 +182,11 @@ export async function getMovieCredits(movieId: number) {
 
 export async function getSimilarMovies(movieId: number) {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/tmdb/movie/${movieId}/similar`)
-    return await res.json()
+    const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/similar?api_key=${TMDB_API_KEY}`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await res.json()
+    return data.results || []
   } catch {
     return []
   }
