@@ -4,8 +4,9 @@ import ShowCard from '@/components/show-card'
 import { Play, ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function MovieDetailPage({ params }: { params: { id: string } }) {
-  const movieId = parseInt(params.id)
+export default async function MovieDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const movieId = parseInt(id)
   const [movieDetails, credits, similarMovies] = await Promise.all([
     getMovieDetails(movieId),
     getMovieCredits(movieId),
